@@ -1,12 +1,4 @@
 
---- Possible return values: 0, 1, 2
---- @return number
-function LocalizationGetSystemDateFormat() end
-
---- Same return values as GET_CURRENT_LANGUAGE
---- @return number
-function LocalizationGetSystemLanguage() end
-
 --- 0 = american (en-US)
 --- 1 = french (fr-FR)
 --- 2 = german (de-DE)
@@ -20,5 +12,16 @@ function LocalizationGetSystemLanguage() end
 --- 10 = japanese (ja-JP)
 --- 11 = mexican (es-MX)
 --- 12 = chinesesimp (zh-CN)
+--- @name GET_CURRENT_LANGUAGE
 --- @return number
 function GetCurrentLanguage() end
+
+--- Possible return values: 0, 1, 2
+--- @name _LOCALIZATION_GET_SYSTEM_DATE_FORMAT
+--- @return number
+function LocalizationGetSystemDateFormat() end
+
+--- Same return values as GET_CURRENT_LANGUAGE
+--- @name _LOCALIZATION_GET_SYSTEM_LANGUAGE
+--- @return number
+function LocalizationGetSystemLanguage() end

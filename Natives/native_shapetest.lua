@@ -1,11 +1,28 @@
 
 --- Invalidates the entity handle passed by removing the fwScriptGuid from the entity. This should be used when receiving an
 --- ambient entity from shape testing natives, but can also be used for other natives returning an 'irrelevant' entity handle.
+--- @name RELEASE_SCRIPT_GUID_FROM_ENTITY
 --- @param entity Entity The entity handle to invalidate.
 --- @return void (Type not found)
 function ReleaseScriptGuidFromEntity(entity) end
 
+--- Does the same as [START_SHAPE_TEST_LOS_PROBE](#\_0x7EE9F5D83DD4F90E), except blocking until the shape test completes.
+--- Use [START_SHAPE_TEST_LOS_PROBE](#\_0x7EE9F5D83DD4F90E) instead. Literally. Rockstar named this correctly: it's expensive, and it's synchronous.
+--- @name START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE
+--- @param x1 number Starting X coordinate.
+--- @param y1 number Starting Y coordinate.
+--- @param z1 number Starting Z coordinate.
+--- @param x2 number Ending X coordinate.
+--- @param y2 number Ending Y coordinate.
+--- @param z2 number Ending Z coordinate.
+--- @param flags number See [START_SHAPE_TEST_LOS_PROBE](#\_0x7EE9F5D83DD4F90E).
+--- @param entity Entity An entity to ignore, or 0.
+--- @param p8 number A bit mask with bits 1, 2 and/or 4, relating to collider types. 4 should usually be used.
+--- @return number
+function StartExpensiveSynchronousShapeTestLosProbe(x1, y1, z1, x2, y2, z2, flags, entity, p8) end
+
 --- See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E) for flags.
+--- @name START_SHAPE_TEST_BOUND
 --- @param entity Entity 
 --- @param flags1 number 
 --- @param flags2 number 
@@ -15,6 +32,7 @@ function StartShapeTestBound(entity, flags1, flags2) end
 --- Returns the result of a shape test, also returning the material of any touched surface.
 --- When used with an asynchronous shape test, this native should be looped until returning 0 or 2, after which the handle is invalidated.
 --- Unless the return value is 2, the other return values are undefined.
+--- @name GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL
 --- @param shapeTestHandle number A shape test handle.
 --- @param hit boolean Whether or not the shape test hit any collisions.
 --- @param endCoords Vector3 The resulting coordinates where the shape test hit a collision.
@@ -23,6 +41,59 @@ function StartShapeTestBound(entity, flags1, flags2) end
 --- @param entityHit Entity Any dynamic entity hit by the shape test.
 --- @return number
 function GetShapeTestResultIncludingMaterial(shapeTestHandle, hit, endCoords, surfaceNormal, materialHash, entityHit) end
+
+--- See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E) for flags.
+--- @name START_SHAPE_TEST_BOUNDING_BOX
+--- @param entity Entity 
+--- @param flags1 number 
+--- @param flags2 number 
+--- @return number
+function StartShapeTestBoundingBox(entity, flags1, flags2) end
+
+--- Returns the result of a shape test.
+--- When used with an asynchronous shape test, this native should be looped until returning 0 or 2, after which the handle is invalidated.
+--- Unless the return value is 2, the other return values are undefined.
+--- @name GET_SHAPE_TEST_RESULT
+--- @param shapeTestHandle number A shape test handle.
+--- @param hit boolean Whether or not the shape test hit any collisions.
+--- @param endCoords Vector3 The resulting coordinates where the shape test hit a collision.
+--- @param surfaceNormal Vector3 The surface normal of the hit position.
+--- @param entityHit Entity Any dynamic entity hit by the shape test.
+--- @return number
+function GetShapeTestResult(shapeTestHandle, hit, endCoords, surfaceNormal, entityHit) end
+
+--- Raycast from point to point, where the ray has a radius.
+--- @name START_SHAPE_TEST_CAPSULE
+--- @param x1 number Starting X coordinate.
+--- @param y1 number Starting Y coordinate.
+--- @param z1 number Starting Z coordinate.
+--- @param x2 number Ending X coordinate.
+--- @param y2 number Ending Y coordinate.
+--- @param z2 number Ending Z coordinate.
+--- @param radius number 
+--- @param flags number See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E)
+--- @param entity Entity Entity to ignore, or 0.
+--- @param p9 number A bit mask with bits 1, 2, 4, or 7 relating to collider types. 4 and 7 are usually used.
+--- @return number
+function StartShapeTestCapsule(x1, y1, z1, x2, y2, z2, radius, flags, entity, p9) end
+
+--- For more information, see [`START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE`](#\_0x377906D8A31E5586) and [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E).
+--- @name START_SHAPE_TEST_BOX
+--- @param x number Starting X coordinate.
+--- @param y number Starting Y coordinate.
+--- @param z number Starting Z coordinate.
+--- @param x1 number Ending X coordinate.
+--- @param y1 number Ending Y coordinate.
+--- @param z1 number Ending Z coordinate.
+--- @param rotX number 
+--- @param rotY number 
+--- @param rotZ number 
+--- @param p9 number Unknown, always 2 or 0
+--- @param flags number See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E)
+--- @param entity Entity 
+--- @param p12 number A bit mask with bits 1, 2, 4, or 7 relating to collider types. 4 and 7 are usually used.
+--- @return number
+function StartShapeTestBox(x, y, z, x1, y1, z1, rotX, rotY, rotZ, p9, flags, entity, p12) end
 
 --- Asynchronously starts a line-of-sight (raycast) world probe shape test.
 --- ```cpp
@@ -41,6 +112,7 @@ function GetShapeTestResultIncludingMaterial(shapeTestHandle, hit, endCoords, su
 --- }
 --- NOTE: Raycasts that intersect with mission_entites (flag = 2) has limited range and will not register for far away entites. The range seems to be about 30 metres.
 --- Use the handle with [GET_SHAPE_TEST_RESULT](#\_0x3D87450E15D98694) or [GET_SHAPE_TEST_RESULT_INCLUDING_MATERIAL](#\_0x65287525D951F6BE) until it returns 0 or 2.
+--- @name START_SHAPE_TEST_LOS_PROBE
 --- @param x1 number Starting X coordinate.
 --- @param y1 number Starting Y coordinate.
 --- @param z1 number Starting Z coordinate.
@@ -53,42 +125,8 @@ function GetShapeTestResultIncludingMaterial(shapeTestHandle, hit, endCoords, su
 --- @return number
 function StartShapeTestLosProbe(x1, y1, z1, x2, y2, z2, flags, entity, p8) end
 
---- Returns the result of a shape test.
---- When used with an asynchronous shape test, this native should be looped until returning 0 or 2, after which the handle is invalidated.
---- Unless the return value is 2, the other return values are undefined.
---- @param shapeTestHandle number A shape test handle.
---- @param hit boolean Whether or not the shape test hit any collisions.
---- @param endCoords Vector3 The resulting coordinates where the shape test hit a collision.
---- @param surfaceNormal Vector3 The surface normal of the hit position.
---- @param entityHit Entity Any dynamic entity hit by the shape test.
---- @return number
-function GetShapeTestResult(shapeTestHandle, hit, endCoords, surfaceNormal, entityHit) end
-
---- See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E) for flags.
---- @param entity Entity 
---- @param flags1 number 
---- @param flags2 number 
---- @return number
-function StartShapeTestBoundingBox(entity, flags1, flags2) end
-
---- For more information, see [`START_EXPENSIVE_SYNCHRONOUS_SHAPE_TEST_LOS_PROBE`](#\_0x377906D8A31E5586) and [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E).
---- @param x number Starting X coordinate.
---- @param y number Starting Y coordinate.
---- @param z number Starting Z coordinate.
---- @param x1 number Ending X coordinate.
---- @param y1 number Ending Y coordinate.
---- @param z1 number Ending Z coordinate.
---- @param rotX number 
---- @param rotY number 
---- @param rotZ number 
---- @param p9 number Unknown, always 2 or 0
---- @param flags number See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E)
---- @param entity Entity 
---- @param p12 number A bit mask with bits 1, 2, 4, or 7 relating to collider types. 4 and 7 are usually used.
---- @return number
-function StartShapeTestBox(x, y, z, x1, y1, z1, rotX, rotY, rotZ, p9, flags, entity, p12) end
-
 --- Performs the same type of trace as START_SHAPE_TEST_CAPSULE, but with some different hardcoded parameters.
+--- @name START_SHAPE_TEST_SWEPT_SPHERE
 --- @param x1 number Starting X coordinate.
 --- @param y1 number Starting Y coordinate.
 --- @param z1 number Starting Z coordinate.
@@ -102,39 +140,12 @@ function StartShapeTestBox(x, y, z, x1, y1, z1, rotX, rotY, rotZ, p9, flags, ent
 --- @return number
 function StartShapeTestSweptSphere(x1, y1, z1, x2, y2, z2, radius, flags, entity, p9) end
 
---- Raycast from point to point, where the ray has a radius.
---- @param x1 number Starting X coordinate.
---- @param y1 number Starting Y coordinate.
---- @param z1 number Starting Z coordinate.
---- @param x2 number Ending X coordinate.
---- @param y2 number Ending Y coordinate.
---- @param z2 number Ending Z coordinate.
---- @param radius number 
---- @param flags number See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E)
---- @param entity Entity Entity to ignore, or 0.
---- @param p9 number A bit mask with bits 1, 2, 4, or 7 relating to collider types. 4 and 7 are usually used.
---- @return number
-function StartShapeTestCapsule(x1, y1, z1, x2, y2, z2, radius, flags, entity, p9) end
-
---- Does the same as [START_SHAPE_TEST_LOS_PROBE](#\_0x7EE9F5D83DD4F90E), except blocking until the shape test completes.
---- Use [START_SHAPE_TEST_LOS_PROBE](#\_0x7EE9F5D83DD4F90E) instead. Literally. Rockstar named this correctly: it's expensive, and it's synchronous.
---- @param x1 number Starting X coordinate.
---- @param y1 number Starting Y coordinate.
---- @param z1 number Starting Z coordinate.
---- @param x2 number Ending X coordinate.
---- @param y2 number Ending Y coordinate.
---- @param z2 number Ending Z coordinate.
---- @param flags number See [START_SHAPE_TEST_LOS_PROBE](#\_0x7EE9F5D83DD4F90E).
---- @param entity Entity An entity to ignore, or 0.
---- @param p8 number A bit mask with bits 1, 2 and/or 4, relating to collider types. 4 should usually be used.
---- @return number
-function StartExpensiveSynchronousShapeTestLosProbe(x1, y1, z1, x2, y2, z2, flags, entity, p8) end
-
 --- Since it is only used in the PC version, likely some mouse-friendly shape test. Uses **in** vector arguments.
 --- Asynchronous.
 --- it returns a ShapeTest handle that can be used with GET_SHAPE_TEST_RESULT.  
 --- In its only usage in game scripts its called with flag set to 511, entity to player_ped_id and flag2 set to 7  
 --- See [`START_SHAPE_TEST_LOS_PROBE`](#\_0x7EE9F5D83DD4F90E) for flags.
+--- @name _START_SHAPE_TEST_SURROUNDING_COORDS
 --- @param pVec1 Vector3 
 --- @param pVec2 Vector3 
 --- @param flag number 

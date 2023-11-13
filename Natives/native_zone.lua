@@ -1,21 +1,4 @@
 
---- Only used once in the decompiled scripts. Seems to be related to scripted vehicle generators.  
---- Modified example from "am_imp_exp.c4", line 6418:  
---- /* popSchedules[0] = ZONE::GET_ZONE_POPSCHEDULE(ZONE::GET_ZONE_AT_COORDS(891.3, 807.9, 188.1));  
---- etc.  
---- */  
---- STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(vehicleHash);  
---- ZONE::CLEAR_POPSCHEDULE_OVERRIDE_VEHICLE_MODEL(popSchedules[index]);  
---- @param scheduleId number 
---- @return void (Type not found)
-function ClearPopscheduleOverrideVehicleModel(scheduleId) end
-
---- @param x number 
---- @param y number 
---- @param z number 
---- @return number
-function GetZoneAtCoords(x, y, z) end
-
 --- Returns a hash representing which part of the map the given coords are located.  
 --- Possible return values:  
 --- (Hash of) city -> -289320599  
@@ -23,26 +6,36 @@ function GetZoneAtCoords(x, y, z) end
 --- C# Example :  
 --- Ped player = Game.Player.Character;  
 --- Hash h = Function.Call<Hash>(Hash.GET_HASH_OF_MAP_AREA_AT_COORDS, player.Position.X, player.Position.Y, player.Position.Z);  
+--- @name GET_HASH_OF_MAP_AREA_AT_COORDS
 --- @param x number 
 --- @param y number 
 --- @param z number 
 --- @return Hash
 function GetHashOfMapAreaAtCoords(x, y, z) end
 
---- Gets the zone scumminess level, used to calculate the cellphone signal strength.
---- ```cpp
---- enum eZoneScumminess
---- {
----     SCUMMINESS_POSH = 0,
----     SCUMMINESS_NICE = 1,
----     SCUMMINESS_ABOVE_AVERAGE = 2,
----     SCUMMINESS_BELOW_AVERAGE = 3,
----     SCUMMINESS_CRAP = 4,
----     SCUMMINESS_SCUM = 5
---- }
---- @param zoneId number The zone id
+--- @name GET_ZONE_AT_COORDS
+--- @param x number 
+--- @param y number 
+--- @param z number 
 --- @return number
-function GetZoneScumminess(zoneId) end
+function GetZoneAtCoords(x, y, z) end
+
+--- Only used once in the decompiled scripts. Seems to be related to scripted vehicle generators.  
+--- Modified example from "am_imp_exp.c4", line 6418:  
+--- /* popSchedules[0] = ZONE::GET_ZONE_POPSCHEDULE(ZONE::GET_ZONE_AT_COORDS(891.3, 807.9, 188.1));  
+--- etc.  
+--- */  
+--- STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(vehicleHash);  
+--- ZONE::CLEAR_POPSCHEDULE_OVERRIDE_VEHICLE_MODEL(popSchedules[index]);  
+--- @name CLEAR_POPSCHEDULE_OVERRIDE_VEHICLE_MODEL
+--- @param scheduleId number 
+--- @return void (Type not found)
+function ClearPopscheduleOverrideVehicleModel(scheduleId) end
+
+--- @name GET_ZONE_POPSCHEDULE
+--- @param zoneId number 
+--- @return number
+function GetZonePopschedule(zoneId) end
 
 --- AIRP = Los Santos International Airport  
 --- ALAMO = Alamo Sea  
@@ -135,6 +128,7 @@ function GetZoneScumminess(zoneId) end
 --- ZQ_UAR = Davis Quartz  
 --- PROL = Prologue / North Yankton
 --- ISHeist = Cayo Perico Island
+--- @name GET_NAME_OF_ZONE
 --- @param x number 
 --- @param y number 
 --- @param z number 
@@ -148,19 +142,27 @@ function GetNameOfZone(x, y, z) end
 --- */  
 --- ZONE::OVERRIDE_POPSCHEDULE_VEHICLE_MODEL(popSchedules[index], vehicleHash);  
 --- STREAMING::REQUEST_MODEL(vehicleHash);  
+--- @name OVERRIDE_POPSCHEDULE_VEHICLE_MODEL
 --- @param scheduleId number 
 --- @param vehicleHash Hash 
 --- @return void (Type not found)
 function OverridePopscheduleVehicleModel(scheduleId, vehicleHash) end
 
---- @param zoneId number 
---- @param toggle boolean 
---- @return void (Type not found)
-function SetZoneEnabled(zoneId, toggle) end
-
---- @param zoneId number 
+--- Gets the zone scumminess level, used to calculate the cellphone signal strength.
+--- ```cpp
+--- enum eZoneScumminess
+--- {
+---     SCUMMINESS_POSH = 0,
+---     SCUMMINESS_NICE = 1,
+---     SCUMMINESS_ABOVE_AVERAGE = 2,
+---     SCUMMINESS_BELOW_AVERAGE = 3,
+---     SCUMMINESS_CRAP = 4,
+---     SCUMMINESS_SCUM = 5
+--- }
+--- @name GET_ZONE_SCUMMINESS
+--- @param zoneId number The zone id
 --- @return number
-function GetZonePopschedule(zoneId) end
+function GetZoneScumminess(zoneId) end
 
 --- 'zoneName' corresponds to an entry in 'popzone.ipl'.  
 --- AIRP = Los Santos International Airport  
@@ -252,6 +254,13 @@ function GetZonePopschedule(zoneId) end
 --- ZANCUDO = Zancudo River  
 --- ZP_ORT = Port of South Los Santos  
 --- ZQ_UAR = Davis Quartz  
+--- @name GET_ZONE_FROM_NAME_ID
 --- @param zoneName string 
 --- @return number
 function GetZoneFromNameId(zoneName) end
+
+--- @name SET_ZONE_ENABLED
+--- @param zoneId number 
+--- @param toggle boolean 
+--- @return void (Type not found)
+function SetZoneEnabled(zoneId, toggle) end

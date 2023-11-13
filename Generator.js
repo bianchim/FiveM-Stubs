@@ -3,10 +3,11 @@ const path = require('path')
 const https = require('https')
 
 let docURL = 'https://runtime.fivem.net/doc/natives.json'
+let docURLCFX = 'https://runtime.fivem.net/doc/natives_cfx.json'
 let folder = './Natives/'
 
-function FetchDoc () {
-  https.get(docURL, (resp) => {
+function FetchDoc (url) {
+  https.get(url, (resp) => {
     let data = ''
 
     // Get data chunk.
@@ -37,6 +38,8 @@ function ParseDocumentation (data) {
       let functionName = GetFunctionNameFromNative(native)
       let { params, descParams } = GetParamsFromNative(native)
       let desc = GetFunctionDescFromNative(native)
+
+      desc.push(`--- @name ${native.name}`)
 
       descParams.forEach((elt, index) => {
         desc.push(`--- ${elt}`)
@@ -167,4 +170,5 @@ function ClearPrevious () {
 }
 
 ClearPrevious()
-FetchDoc()
+FetchDoc(docURL)
+FetchDoc(docURLCFX)

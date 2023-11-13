@@ -1,23 +1,16 @@
 
---- @param ped Ped 
+--- @name ADD_EXPLOSION_WITH_USER_VFX
 --- @param x number 
 --- @param y number 
 --- @param z number 
 --- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
+--- @param explosionFx Hash 
 --- @param damageScale number 
 --- @param isAudible boolean If explosion makes a sound.
 --- @param isInvisible boolean If the explosion is invisible or not.
 --- @param cameraShake number 
 --- @return void (Type not found)
-function AddOwnedExplosion(ped, x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake) end
-
---- Returns TRUE if it found something. FALSE if not.  
---- @param outPosition Vector3 
---- @param x number 
---- @param y number 
---- @param z number 
---- @return boolean
-function GetClosestFirePos(outPosition, x, y, z) end
+function AddExplosionWithUserVfx(x, y, z, explosionType, explosionFx, damageScale, isAudible, isInvisible, cameraShake) end
 
 --- NativeDB Added Parameter 9: BOOL noDamage
 --- BOOL isAudible = If explosion makes a sound.  
@@ -111,6 +104,7 @@ function GetClosestFirePos(outPosition, x, y, z) end
 ---     EXP_TAG_SCRIPT_MISSILE_LARGE = 81,
 ---     EXP_TAG_SUBMARINE_BIG = 82,
 --- };
+--- @name ADD_EXPLOSION
 --- @param x number 
 --- @param y number 
 --- @param z number 
@@ -122,30 +116,60 @@ function GetClosestFirePos(outPosition, x, y, z) end
 --- @return void (Type not found)
 function AddExplosion(x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake) end
 
+--- @name IS_EXPLOSION_ACTIVE_IN_AREA
+--- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
+--- @param x1 number 
+--- @param y1 number 
+--- @param z1 number 
+--- @param x2 number 
+--- @param y2 number 
+--- @param z2 number 
+--- @return boolean
+function IsExplosionActiveInArea(explosionType, x1, y1, z1, x2, y2, z2) end
+
+--- NativeDB Introduced: v1290
+--- @name _GET_ENTITY_INSIDE_EXPLOSION_SPHERE
+--- @param explosionType number 
 --- @param x number 
 --- @param y number 
 --- @param z number 
 --- @param radius number 
---- @return number
-function GetNumberOfFiresInRange(x, y, z, radius) end
+--- @return Entity
+function GetEntityInsideExplosionSphere(explosionType, x, y, z, radius) end
 
+--- Returns TRUE if it found something. FALSE if not.  
+--- @name GET_CLOSEST_FIRE_POS
+--- @param outPosition Vector3 
+--- @param x number 
+--- @param y number 
+--- @param z number 
+--- @return boolean
+function GetClosestFirePos(outPosition, x, y, z) end
+
+--- @name ADD_OWNED_EXPLOSION
+--- @param ped Ped 
 --- @param x number 
 --- @param y number 
 --- @param z number 
 --- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
---- @param explosionFx Hash 
 --- @param damageScale number 
 --- @param isAudible boolean If explosion makes a sound.
 --- @param isInvisible boolean If the explosion is invisible or not.
 --- @param cameraShake number 
 --- @return void (Type not found)
-function AddExplosionWithUserVfx(x, y, z, explosionType, explosionFx, damageScale, isAudible, isInvisible, cameraShake) end
+function AddOwnedExplosion(ped, x, y, z, explosionType, damageScale, isAudible, isInvisible, cameraShake) end
 
---- @param entity Entity 
+--- @name IS_EXPLOSION_IN_SPHERE
+--- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
+--- @param x number 
+--- @param y number 
+--- @param z number 
+--- @param radius number 
 --- @return boolean
-function IsEntityOnFire(entity) end
+function IsExplosionInSphere(explosionType, x, y, z, radius) end
 
 --- Returns a handle to the first entity within the a circle spawned inside the 2 points from a radius.
+--- @name _GET_ENTITY_INSIDE_EXPLOSION_AREA
 --- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
 --- @param x1 number 
 --- @param y1 number 
@@ -158,6 +182,7 @@ function IsEntityOnFire(entity) end
 function GetEntityInsideExplosionArea(explosionType, x1, y1, z1, x2, y2, z2, radius) end
 
 --- See [`IS_POINT_IN_ANGLED_AREA`](#\_0x2A70BAE8883E4C81) for the definition of an angled area.
+--- @name IS_EXPLOSION_IN_ANGLED_AREA
 --- @param explosionType number explosion enum, -1 for any explosion type. See [ADD_EXPLOSION](#\_0xE3AD2BDBAEE269AC).
 --- @param x1 number X dimension of the angled area 'origin'
 --- @param y1 number Y dimension of the angled area 'origin'
@@ -169,6 +194,38 @@ function GetEntityInsideExplosionArea(explosionType, x1, y1, z1, x2, y2, z2, rad
 --- @return boolean
 function IsExplosionInAngledArea(explosionType, x1, y1, z1, x2, y2, z2, width) end
 
+--- @name IS_ENTITY_ON_FIRE
+--- @param entity Entity 
+--- @return boolean
+function IsEntityOnFire(entity) end
+
+--- @name GET_NUMBER_OF_FIRES_IN_RANGE
+--- @param x number 
+--- @param y number 
+--- @param z number 
+--- @param radius number 
+--- @return number
+function GetNumberOfFiresInRange(x, y, z, radius) end
+
+--- Starts a fire:  
+--- xyz: Location of fire  
+--- maxChildren: The max amount of times a fire can spread to other objects. Must be 25 or less, or the function will do nothing.  
+--- isGasFire: Whether or not the fire is powered by gasoline.  
+--- @name START_SCRIPT_FIRE
+--- @param X number 
+--- @param Y number 
+--- @param Z number 
+--- @param maxChildren number 
+--- @param isGasFire boolean 
+--- @return FireId
+function StartScriptFire(X, Y, Z, maxChildren, isGasFire) end
+
+--- @name START_ENTITY_FIRE
+--- @param entity Entity 
+--- @return FireId
+function StartEntityFire(entity) end
+
+--- @name IS_EXPLOSION_IN_AREA
 --- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
 --- @param x1 number 
 --- @param y1 number 
@@ -179,66 +236,27 @@ function IsExplosionInAngledArea(explosionType, x1, y1, z1, x2, y2, z2, width) e
 --- @return boolean
 function IsExplosionInArea(explosionType, x1, y1, z1, x2, y2, z2) end
 
---- NativeDB Introduced: v1290
---- @param explosionType number 
---- @param x number 
---- @param y number 
---- @param z number 
---- @param radius number 
---- @return Entity
-function GetEntityInsideExplosionSphere(explosionType, x, y, z, radius) end
-
---- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
---- @param x1 number 
---- @param y1 number 
---- @param z1 number 
---- @param x2 number 
---- @param y2 number 
---- @param z2 number 
---- @return boolean
-function IsExplosionActiveInArea(explosionType, x1, y1, z1, x2, y2, z2) end
-
---- @param entity Entity 
---- @return FireId
-function StartEntityFire(entity) end
-
---- @param explosionType number See [`ADD_EXPLOSION`](#\_0xE3AD2BDBAEE269AC).
---- @param x number 
---- @param y number 
---- @param z number 
---- @param radius number 
---- @return boolean
-function IsExplosionInSphere(explosionType, x, y, z, radius) end
-
---- Starts a fire:  
---- xyz: Location of fire  
---- maxChildren: The max amount of times a fire can spread to other objects. Must be 25 or less, or the function will do nothing.  
---- isGasFire: Whether or not the fire is powered by gasoline.  
---- @param X number 
---- @param Y number 
---- @param Z number 
---- @param maxChildren number 
---- @param isGasFire boolean 
---- @return FireId
-function StartScriptFire(X, Y, Z, maxChildren, isGasFire) end
-
 --- SET_FIRE_\*
 --- NativeDB Introduced: v1734
+--- @name _SET_FIRE_SPREAD_RATE
 --- @param p0 number 
 --- @return void (Type not found)
 function SetFireSpreadRate(p0) end
 
---- @param entity Entity 
---- @return void (Type not found)
-function StopEntityFire(entity) end
-
---- @param fireHandle FireId 
---- @return void (Type not found)
-function RemoveScriptFire(fireHandle) end
-
+--- @name STOP_FIRE_IN_RANGE
 --- @param x number 
 --- @param y number 
 --- @param z number 
 --- @param radius number 
 --- @return void (Type not found)
 function StopFireInRange(x, y, z, radius) end
+
+--- @name STOP_ENTITY_FIRE
+--- @param entity Entity 
+--- @return void (Type not found)
+function StopEntityFire(entity) end
+
+--- @name REMOVE_SCRIPT_FIRE
+--- @param fireHandle FireId 
+--- @return void (Type not found)
+function RemoveScriptFire(fireHandle) end
